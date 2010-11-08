@@ -1,11 +1,12 @@
 name: pdftoimage
-version: 0.1.0
-summary: "A library for converting PDF documents into a series of images."
-description: "A library for converting PDF documents into a series of images. This module is based on popper_utils and imagemagick."
+summary: "A ruby gem for converting PDF documents into a series of images."
+description: "A ruby gem for converting PDF documents into a series of images. This module is based off poppler_utils and ImageMagick."
 license: MIT
 authors: Rob Flynn
 homepage: http://rubygems.org/gems/pdftoimage
 email: rob@thingerly.com
+has_yard: true
 
 development_dependencies:
   bundler: ~> 1.0.0
+  yard: ~> 0.6.0

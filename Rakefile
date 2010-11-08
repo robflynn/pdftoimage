@@ -22,9 +22,5 @@ require 'rspec/core/rake_task'
 RSpec::Core::RakeTask.new
 task :default => :spec
 
-require 'rake/rdoctask'
-Rake::RDocTask.new do |rdoc|
-  rdoc.title = "pdftoimage"
-  rdoc.rdoc_files.include("README.rdoc")
-  rdoc.rdoc_files.include("lib/**/*.rb")
-end
+require 'yard'
+YARD::Rake::YardocTask.new  
