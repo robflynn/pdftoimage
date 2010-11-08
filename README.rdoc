@@ -12,8 +12,6 @@ The reasoning behind using poppler_utils is due to the fact that ghostscript
 occasionally has trouble with certain PDF documents which poppler_utils seems
 to be able to parse without error.
 
-== Features
-
 == Examples
 
 require 'pdftoimage'
