@@ -16,6 +16,18 @@ module PDFToImage
       @format = info[:format]
     end
 
+    # Saves the converted image to the specified location
+    #
+    # @param [outname] The output filename of the image
+    def save(outname)
+      cmd = "convert #{@filename} #{outname}"
+
+      `#{cmd}`
+      if $? != 0
+        raise PDFError, "Error converting file: #{cmd}"
+      end
+    end
+
     private 
 
     def identify
