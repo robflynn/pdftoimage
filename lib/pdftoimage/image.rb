@@ -41,18 +41,12 @@ module PDFToImage
     # Saves the converted image to the specified location
     #
     # @param [outname] The output filename of the image
-    # @param [options] Optional arguments to use when saving the image
-    #
-    # Example of saving
-    #
-    # image.save("~/foo.jpg")
-    # image.save("~/bar.jpg", :scale => '50%')
     #
     def save(outname)
       cmd = "convert "
 
       if not @args.empty?
-        cmd += "#{@args} "
+        cmd += "#{@args.join(' ')} "
       end
       
       cmd += "#{@filename} #{outname}"
