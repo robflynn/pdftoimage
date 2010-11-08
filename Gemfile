@@ -2,6 +2,8 @@ source :rubygems
 
 gemspec
 
+gem 'quick_magick'
+
 group :development do
   gem 'rake',     '~> 0.8.7'
   gem 'ore-core',  '~> 0.1.0'
