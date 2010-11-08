@@ -6,8 +6,25 @@ module PDFToImage
     attr_reader :height
     attr_reader :format
     attr_reader :page
+    attr_reader :args
+
+    # We currently only support resizing, as that's all I need at the moment
+    # selfish, but I need to return to the main project
+    CUSTOM_IMAGE_METHODS = [
+      "resize"
+    ]
+
+    CUSTOM_IMAGE_METHODS.each do |method|
+      define_method(method.to_sym) do |*args|
+        @args << "-#{method} #{args.join(' ')}"
+
+        self
+      end
+    end
 
     def initialize(filename)
+      @args = []
+
       @filename = filename
 
       info = identify()
@@ -24,8 +41,21 @@ module PDFToImage
     # Saves the converted image to the specified location
     #
     # @param [outname] The output filename of the image
+    # @param [options] Optional arguments to use when saving the image
+    #
+    # Example of saving
+    #
+    # image.save("~/foo.jpg")
+    # image.save("~/bar.jpg", :scale => '50%')
+    #
     def save(outname)
-      cmd = "convert #{@filename} #{outname}"
+      cmd = "convert "
+
+      if not @args.empty?
+        cmd += "#{@args} "
+      end
+      
+      cmd += "#{@filename} #{outname}"
 
       `#{cmd}`
       if $? != 0
