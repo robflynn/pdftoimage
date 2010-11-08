@@ -1,0 +1,9 @@
+name: pdftoimage
+summary: "TODO: Summary"
+description: "TODO: Description"
+license: MIT
+authors: rob
+homepage: http://rubygems.org/gems/pdftoimage
+
+development_dependencies:
+  bundler: ~> 1.0.0

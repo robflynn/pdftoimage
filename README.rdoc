@@ -1,0 +1,23 @@
+= pdftoimage
+
+* {Homepage}[http://rubygems.org/gems/pdftoimage]
+
+== Description
+
+TODO: Description
+
+== Features
+
+== Examples
+
+== Requirements
+
+== Install
+
+  $ gem install pdftoimage
+
+== Copyright
+
+Copyright (c) 2010 rob
+
+See LICENSE.txt for details.
