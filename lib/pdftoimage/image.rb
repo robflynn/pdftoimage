@@ -5,6 +5,7 @@ module PDFToImage
     attr_reader :width
     attr_reader :height
     attr_reader :format
+    attr_reader :page
 
     def initialize(filename)
       @filename = filename
@@ -14,6 +15,10 @@ module PDFToImage
       @width = info[:width]
       @height = info[:height]
       @format = info[:format]
+
+      tmp_base = File.basename(filename, File.extname(filename))
+      pieces = tmp_base.split('-')
+      @page = pieces[-1].to_i
     end
 
     # Saves the converted image to the specified location
@@ -25,6 +30,18 @@ module PDFToImage
       `#{cmd}`
       if $? != 0
         raise PDFError, "Error converting file: #{cmd}"
+      end
+
+      return true
+    end
+
+    def <=>(img)
+      if @page == img.page
+        return 0
+      elsif @page < img.page
+        return -1
+      else
+        return 1
       end
     end
 

@@ -53,7 +53,7 @@ module PDFToImage
         images << image
       end
 
-      return images
+      return images.sort!
     end
 
     private
