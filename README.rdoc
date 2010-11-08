@@ -23,6 +23,7 @@ to be able to parse without error.
 == Requirements
 
 poppler_utils
+
 ImageMagick
 
 
