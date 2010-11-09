@@ -58,10 +58,12 @@ module PDFToImage
 
     private
 
+    # Generate a random file name in the system's tmp folder
     def random_filename
       File.join(@@pdf_temp_dir, random_name)
     end
 
+    # Generate a random name of {#length} characters.
     def random_name(length = 15)
       @@chars ||= ("a".."z").to_a + ("A".."Z").to_a + ("1".."9").to_a
       return 'pdftoimage-' + Array.new(length, '').collect{@@chars[rand(@@chars.size)]}.join
