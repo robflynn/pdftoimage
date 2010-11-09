@@ -1,4 +1,4 @@
 require 'rspec'
 require 'pdftoimage/version'
 
-include Pdftoimage
+include PDFToImage

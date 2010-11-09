@@ -15,8 +15,8 @@ to be able to parse without error.
 == Examples
 
   require 'pdftoimage'
-  @images = PDFToImage.open('somefile.pdf')
-  @images.each do |img|
+  images = PDFToImage.open('somefile.pdf')
+  images.each do |img|
     img.resize('50%').save("output/page-#{img.page}.jpg")
   end
 
