@@ -22,6 +22,9 @@ module PDFToImage
       end
     end
 
+    # Image constructor
+    #
+    # @param [filename] The name of the image file to open
     def initialize(filename)
       @args = []
 
