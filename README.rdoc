@@ -4,13 +4,28 @@
 
 == Description
 
-TODO: Description
+PDFToImage is a ruby gem which allows for conversion of a PDF document into 
+images. It uses poppler_utils to first convert the document to PNG and then
+allows usage of ImageMagick to convert the image into other formats.
 
-== Features
+The reasoning behind using poppler_utils is due to the fact that ghostscript
+occasionally has trouble with certain PDF documents which poppler_utils seems
+to be able to parse without error.
 
 == Examples
 
+  require 'pdftoimage'
+  images = PDFToImage.open('somefile.pdf')
+  images.each do |img|
+    img.resize('50%').save("output/page-#{img.page}.jpg")
+  end
+
 == Requirements
+
+poppler_utils
+
+ImageMagick
+
 
 == Install
 
@@ -18,6 +33,6 @@ TODO: Description
 
 == Copyright
 
-Copyright (c) 2010 rob
+Copyright (c) 2010 Rob Flynn
 
 See LICENSE.txt for details.
