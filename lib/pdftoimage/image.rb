@@ -1,17 +1,19 @@
 module PDFToImage
 
   class Image
+    attr_reader :pdf_name
     attr_reader :filename
     attr_reader :width
     attr_reader :height
-    attr_reader :format
     attr_reader :page
     attr_reader :args
+    attr_reader :opened
 
     # We currently only support resizing, as that's all I need at the moment
     # selfish, but I need to return to the main project
     CUSTOM_IMAGE_METHODS = [
-      "resize"
+      "resize",
+      "quality"
     ]
 
     CUSTOM_IMAGE_METHODS.each do |method|
@@ -25,20 +27,16 @@ module PDFToImage
     # Image constructor
     #
     # @param [filename] The name of the image file to open
-    def initialize(filename)
+    def initialize(pdf_name, filename, page, page_size)
       @args = []
 
+      @pdf_name = pdf_name
       @filename = filename
+      @opened = false
+      @width = page_size[:width]
+      @height = page_size[:height]
 
-      info = identify()
-
-      @width = info[:width]
-      @height = info[:height]
-      @format = info[:format]
-
-      tmp_base = File.basename(filename, File.extname(filename))
-      pieces = tmp_base.split('-')
-      @page = pieces[-1].to_i
+      @page = page
     end
 
     # Saves the converted image to the specified location
@@ -46,6 +44,9 @@ module PDFToImage
     # @param [outname] The output filename of the image
     #
     def save(outname)
+
+      generate_temp_file
+
       cmd = "convert "
 
       if not @args.empty?
@@ -54,10 +55,7 @@ module PDFToImage
       
       cmd += "#{@filename} #{outname}"
 
-      `#{cmd}`
-      if $? != 0
-        raise PDFError, "Error converting file: #{cmd}"
-      end
+      PDFToImage::exec(cmd)
 
       return true
     end
@@ -74,22 +72,15 @@ module PDFToImage
 
     private 
 
-    def identify
-      cmd = "identify #{@filename}"
-
-      result = `#{cmd}`
-      unless $?.success?
-        raise PDFToImage::PDFError, "Error executing #{cmd}"
+    def generate_temp_file
+      if @opened == false
+        cmd = "pdftoppm -png -f #{@page} -l #{@page} #{@pdf_name} #{@filename}"
+        PDFToImage::exec(cmd)
+        @filename = "#{@filename}-#{@page}.png"
+        @opened = true
       end
 
-      info = result.strip.split(' ')
-      dimensions = info[2].split('x')
-
-      return {
-        :format => info[1],
-        :width => dimensions[0],
-        :height => dimensions[1]
-      }
+      return true
     end
 
   end

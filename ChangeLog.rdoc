@@ -1,5 +1,6 @@
 === 0.1.2 / 2010-11-11
 * Added support for blocks upon opening a PDF
+* Image objects now support the "quality" method for JPEG/MIFF/PNG compression levels.
 
 === 0.1.1 / 2010-11-10
 
