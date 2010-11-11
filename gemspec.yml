@@ -10,3 +10,4 @@ has_yard: true
 development_dependencies:
   bundler: ~> 1.0.0
   yard: ~> 0.6.0
+
