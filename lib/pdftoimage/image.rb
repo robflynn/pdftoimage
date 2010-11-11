@@ -11,7 +11,8 @@ module PDFToImage
     # We currently only support resizing, as that's all I need at the moment
     # selfish, but I need to return to the main project
     CUSTOM_IMAGE_METHODS = [
-      "resize"
+      "resize",
+      "quality"
     ]
 
     CUSTOM_IMAGE_METHODS.each do |method|
