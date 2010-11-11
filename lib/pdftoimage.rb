@@ -38,18 +38,14 @@ module PDFToImage
       end
 
       cmd = "pdftoppm -png #{filename} #{target_path}"
-
-      `#{cmd}`
-      if $? != 0
-        raise PDFError, "Error reading PDF."
-      end
+      exec(cmd, "Error reading PDF")
 
       pngs = Dir.glob("#{target_path}*.png")
 
       images = []
 
       pngs.each do |png|
-        image = Image.new(png)
+        image = Image.new(filename, png)
         images << image
       end
 
@@ -58,6 +54,23 @@ module PDFToImage
       images.each(&block) if block_given?
 
       return images
+    end
+
+    # Executes the specified command, returning the output.
+    #
+    # @param [cmd] The command to run
+    # @return [String] The output of the command
+    def exec(cmd, error = nil)
+      output = `#{cmd}`
+      if $? != 0
+        if error == nil
+          raise PDFError, "Error executing command: #{cmd}"
+        else
+          raise PDFError, error
+        end
+      end
+
+      return output
     end
 
     private

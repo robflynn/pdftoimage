@@ -7,6 +7,7 @@ module PDFToImage
     attr_reader :format
     attr_reader :page
     attr_reader :args
+    attr_reader :original_filename
 
     # We currently only support resizing, as that's all I need at the moment
     # selfish, but I need to return to the main project
@@ -26,7 +27,7 @@ module PDFToImage
     # Image constructor
     #
     # @param [filename] The name of the image file to open
-    def initialize(filename)
+    def initialize(original_filename, filename)
       @args = []
 
       @filename = filename
@@ -36,6 +37,7 @@ module PDFToImage
       @width = info[:width]
       @height = info[:height]
       @format = info[:format]
+      @original_filename = original_filename
 
       tmp_base = File.basename(filename, File.extname(filename))
       pieces = tmp_base.split('-')
@@ -55,10 +57,7 @@ module PDFToImage
       
       cmd += "#{@filename} #{outname}"
 
-      `#{cmd}`
-      if $? != 0
-        raise PDFError, "Error converting file: #{cmd}"
-      end
+      PDFToImage::exec(cmd)
 
       return true
     end
@@ -78,10 +77,7 @@ module PDFToImage
     def identify
       cmd = "identify #{@filename}"
 
-      result = `#{cmd}`
-      unless $?.success?
-        raise PDFToImage::PDFError, "Error executing #{cmd}"
-      end
+      result = PDFToImage::exec(cmd)
 
       info = result.strip.split(' ')
       dimensions = info[2].split('x')
