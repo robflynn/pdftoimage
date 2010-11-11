@@ -30,7 +30,7 @@ module PDFToImage
     #
     # @param [filename] The filename of the PDF to open
     # @return [Array] An array of images
-    def open(filename)
+    def open(filename, &block)
       target_path = random_filename
 
       if not File.exists?(filename)
@@ -53,7 +53,11 @@ module PDFToImage
         images << image
       end
 
-      return images.sort!
+      images.sort!
+
+      images.each(&block) if block_given?
+
+      return images
     end
 
     private
