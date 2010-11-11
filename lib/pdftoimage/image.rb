@@ -1,5 +1,7 @@
 module PDFToImage
 
+  # A class which is instantiated by PDFToImage when a PDF document
+  # is opened.
   class Image
     attr_reader :pdf_name
     attr_reader :filename
@@ -9,8 +11,7 @@ module PDFToImage
     attr_reader :args
     attr_reader :opened
 
-    # We currently only support resizing, as that's all I need at the moment
-    # selfish, but I need to return to the main project
+    # ImageMagick methods that we currently support.
     CUSTOM_IMAGE_METHODS = [
       "resize",
       "quality"
