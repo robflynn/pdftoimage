@@ -26,6 +26,14 @@ describe PDFToImage do
       File.unlink('spec/tmp2.jpg')
     end
 
+    it "should work with blocks" do
+      counter = 0
+      PDFToImage.open("spec/3pages.pdf") do |page|
+        counter = counter + 1
+      end
+      counter.should equal 3
+    end
+
 
   end
 end

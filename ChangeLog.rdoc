@@ -1,4 +1,7 @@
-=== 0.1.0 / 2010-11-08
+=== 0.1.2 / 2010-11-11
+* Added support for blocks upon opening a PDF
+
+=== 0.1.1 / 2010-11-10
 
 * Initial release:
 
