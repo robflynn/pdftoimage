@@ -20,6 +20,11 @@ to be able to parse without error.
     img.resize('50%').save("output/page-#{img.page}.jpg")
   end
 
+  require 'pdftoimage'
+  PDFToImage.open('anotherpdf.pdf') do |page|
+    page.resize('150').quality('80%').save('out/thumbnail-#{page.page}.jpg")
+  end
+
 == Requirements
 
 poppler_utils
