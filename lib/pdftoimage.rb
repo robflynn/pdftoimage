@@ -31,29 +31,25 @@ module PDFToImage
     # @param [filename] The filename of the PDF to open
     # @return [Array] An array of images
     def open(filename, &block)
-      target_path = random_filename
-
       if not File.exists?(filename)
         raise PDFError, "File '#{filename}' not found."
       end
 
-      cmd = "pdftoppm -png #{filename} #{target_path}"
-      exec(cmd, "Error reading PDF")
+      pages = page_count(filename)
 
-      pngs = Dir.glob("#{target_path}*.png")
-
+      # Array of images
       images = []
 
-      pngs.each do |png|
-        image = Image.new(filename, png)
+      1.upto(pages) { |n|
+        dimensions = page_size(filename, n)
+        image = Image.new(filename, random_filename, n, dimensions)
         images << image
-      end
-
-      images.sort!
+      }
 
       images.each(&block) if block_given?
 
       return images
+
     end
 
     # Executes the specified command, returning the output.
@@ -74,6 +70,35 @@ module PDFToImage
     end
 
     private
+
+    def page_size(filename, page)
+      cmd = "pdfinfo -f #{page} -l #{page} #{filename}"
+      output = exec(cmd)
+
+      matches = /^Page.*?size:.*?(\d+).*?(\d+)/.match(output)
+      if matches.nil?
+        raise PDFError, "Unable to determine page size."
+      end
+
+      scale = 2.08333333333333333
+      dimension = {
+        :width => (matches[1].to_i * scale).to_i,
+        :height => (matches[2].to_i * scale).to_i
+      }
+
+      dimension
+    end
+
+    def page_count(filename)
+      cmd = "pdfinfo #{filename}"
+      output = exec(cmd)
+      matches = /^Pages:.*?(\d+)$/.match(output)
+      if matches.nil?
+        raise PDFError, "Error determining page count."
+      end
+
+      return matches[1].to_i
+    end
 
     # Generate a random file name in the system's tmp folder
     def random_filename
