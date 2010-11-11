@@ -30,33 +30,75 @@ module PDFToImage
     #
     # @param [filename] The filename of the PDF to open
     # @return [Array] An array of images
-    def open(filename)
-      target_path = random_filename
-
+    def open(filename, &block)
       if not File.exists?(filename)
         raise PDFError, "File '#{filename}' not found."
       end
 
-      cmd = "pdftoppm -png #{filename} #{target_path}"
+      pages = page_count(filename)
 
-      `#{cmd}`
-      if $? != 0
-        raise PDFError, "Error reading PDF."
-      end
-
-      pngs = Dir.glob("#{target_path}*.png")
-
+      # Array of images
       images = []
 
-      pngs.each do |png|
-        image = Image.new(png)
+      1.upto(pages) { |n|
+        dimensions = page_size(filename, n)
+        image = Image.new(filename, random_filename, n, dimensions)
         images << image
+      }
+
+      images.each(&block) if block_given?
+
+      return images
+
+    end
+
+    # Executes the specified command, returning the output.
+    #
+    # @param [cmd] The command to run
+    # @return [String] The output of the command
+    def exec(cmd, error = nil)
+      output = `#{cmd}`
+      if $? != 0
+        if error == nil
+          raise PDFError, "Error executing command: #{cmd}"
+        else
+          raise PDFError, error
+        end
       end
 
-      return images.sort!
+      return output
     end
 
     private
+
+    def page_size(filename, page)
+      cmd = "pdfinfo -f #{page} -l #{page} #{filename}"
+      output = exec(cmd)
+
+      matches = /^Page.*?size:.*?(\d+).*?(\d+)/.match(output)
+      if matches.nil?
+        raise PDFError, "Unable to determine page size."
+      end
+
+      scale = 2.08333333333333333
+      dimension = {
+        :width => (matches[1].to_i * scale).to_i,
+        :height => (matches[2].to_i * scale).to_i
+      }
+
+      dimension
+    end
+
+    def page_count(filename)
+      cmd = "pdfinfo #{filename}"
+      output = exec(cmd)
+      matches = /^Pages:.*?(\d+)$/.match(output)
+      if matches.nil?
+        raise PDFError, "Error determining page count."
+      end
+
+      return matches[1].to_i
+    end
 
     # Generate a random file name in the system's tmp folder
     def random_filename

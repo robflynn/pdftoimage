@@ -19,11 +19,19 @@ describe PDFToImage do
       File.unlink('spec/tmp.jpg')
     end
 
-    it "should allow resizing" do
+    it "should allow resizing and quality control" do
       @pages = PDFToImage.open('spec/3pages.pdf')
-      @pages[0].resize('50%').save('spec/tmp2.jpg')
+      @pages[0].resize('50%').quality('80%').save('spec/tmp2.jpg')
       File.exists?('spec/tmp2.jpg').should equal true
       File.unlink('spec/tmp2.jpg')
+    end
+
+    it "should work with blocks" do
+      counter = 0
+      PDFToImage.open("spec/3pages.pdf") do |page|
+        counter = counter + 1
+      end
+      counter.should equal 3
     end
 
 
