@@ -42,7 +42,7 @@ module PDFToImage
 
       1.upto(pages) { |n|
         dimensions = page_size(filename, n)
-        image = Image.new(filename, random_filename, n, dimensions)
+        image = Image.new(filename, random_filename, n, dimensions, pages)
         images << image
       }
 

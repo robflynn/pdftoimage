@@ -34,6 +34,18 @@ describe PDFToImage do
       counter.should equal 3
     end
 
+    it "should parse multi-digit page counts" do
+      counter = 0
+      PDFToImage.open('spec/11pages.pdf') do |page|
+        result = page.save("spec/11pg-#{page.page}.jpg")
+        File.exists?("spec/11pg-#{page.page}.jpg").should equal true
+        File.unlink("spec/11pg-#{page.page}.jpg")
+        counter = counter + 1
+      end
+
+      counter.should equal 11
+    end
+
 
   end
 end
