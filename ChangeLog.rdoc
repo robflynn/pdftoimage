@@ -1,3 +1,6 @@
+=== 0.1.3 / 2010-11-12
+* Fixed a problem where PDF documents with more than 9 pages were not parsing properly. (embarrassing 0 padding problem.)
+
 === 0.1.2 / 2010-11-11
 * Added support for blocks upon opening a PDF
 * Image objects now support the "quality" method for JPEG/MIFF/PNG compression levels.

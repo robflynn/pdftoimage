@@ -28,7 +28,7 @@ module PDFToImage
     # Image constructor
     #
     # @param [filename] The name of the image file to open
-    def initialize(pdf_name, filename, page, page_size)
+    def initialize(pdf_name, filename, page, page_size, page_count)
       @args = []
 
       @pdf_name = pdf_name
@@ -36,6 +36,7 @@ module PDFToImage
       @opened = false
       @width = page_size[:width]
       @height = page_size[:height]
+      @page_count = page_count
 
       @page = page
     end
@@ -77,11 +78,21 @@ module PDFToImage
       if @opened == false
         cmd = "pdftoppm -png -f #{@page} -l #{@page} #{@pdf_name} #{@filename}"
         PDFToImage::exec(cmd)
-        @filename = "#{@filename}-#{@page}.png"
+        @filename = "#{@filename}-#{page_suffix}.png"
         @opened = true
       end
 
       return true
+    end
+
+    def page_suffix
+      len = @page.to_s.length
+      if len == @page_count.to_s.length
+        @page
+      end
+
+      padded = '0' * (@page_count.to_s.length-len) + @page.to_s
+      padded
     end
 
   end
