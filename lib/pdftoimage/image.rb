@@ -86,12 +86,24 @@ module PDFToImage
     end
 
     def page_suffix
-      len = @page.to_s.length
-      if len == @page_count.to_s.length
+      cur_page_len = @page.to_s.length
+      total_page_len = @page_count.to_s.length
+
+      num_zeroes = total_page_len - cur_page_len
+
+      # This is really weird. Basically, poppler_utils does not
+      # prepend a '0' to the page count when the total number of
+      # pages is 10, 100, 1000, 10000, etc. I hate putting this here,
+      # but whatever...
+      if @page_count.to_s.reverse.to_i == 1 && num_zeroes > 0
+        num_zeroes = num_zeroes - 1
+      end
+
+      if cur_page_len == total_page_len
         @page
       end
 
-      padded = '0' * (@page_count.to_s.length-len) + @page.to_s
+      padded = '0' * num_zeroes + @page.to_s
       padded
     end
 
