@@ -1,4 +1,9 @@
-require 'rspec'
-require 'pdftoimage/version'
+require 'spork'
 
-include PDFToImage
+Spork.prefork do
+  ENV["RAILS_ENV"] ||= 'test'
+  require 'rspec'
+  require 'pdftoimage/version'
+
+  include PDFToImage
+end
