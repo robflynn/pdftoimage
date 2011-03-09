@@ -1,4 +1,13 @@
-require 'rspec'
-require 'pdftoimage/version'
+require 'rubygems'
+require 'spork'
 
-include PDFToImage
+Spork.prefork do
+  require 'rspec'
+  require 'pdftoimage/version'
+
+  include PDFToImage
+end
+
+Spork.each_run do
+end
+
