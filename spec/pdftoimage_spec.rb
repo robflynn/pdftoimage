@@ -14,9 +14,11 @@ describe PDFToImage do
 
     it "should allow saving" do
       @pages = PDFToImage.open('spec/3pages.pdf')
-      @pages[0].save('spec/tmp.jpg')
-      File.exists?('spec/tmp.jpg').should equal true
-      File.unlink('spec/tmp.jpg')
+      @pages.each do |page|
+        page.save('spec/tmp.jpg')
+        File.exists?('spec/tmp.jpg').should equal true
+        File.unlink('spec/tmp.jpg')
+      end
     end
 
     it "should allow resizing and quality control" do

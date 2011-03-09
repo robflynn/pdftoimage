@@ -72,7 +72,7 @@ module PDFToImage
       end
     end
 
-    private 
+    private
 
     def generate_temp_file
       if @opened == false
@@ -95,9 +95,12 @@ module PDFToImage
       # prepend a '0' to the page count when the total number of
       # pages is 10, 100, 1000, 10000, etc. I hate putting this here,
       # but whatever...
-      if @page_count.to_s.reverse.to_i == 1 && num_zeroes > 0
-        num_zeroes = num_zeroes - 1
-      end
+
+# TODO: Keep an eye on this. This suddenly started causing problems.
+# Did poppler_utils change?
+#      if @page_count.to_s.reverse.to_i == 1 && num_zeroes > 0
+#       num_zeroes = num_zeroes - 1
+#      end
 
       if cur_page_len == total_page_len
         @page
