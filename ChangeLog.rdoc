@@ -1,7 +1,12 @@
+=== 0.1.7 / 2018-05-01
+* Updated yard to resolve a vulnerability. 
+
 === 0.1.6 / 2011-07-13
 * Buggy PDF generators try to encode CreationDate and ModDate as UTF-16 as opposed to ASCII.  This leads to parsing errors where the code was assuming UTF-8 encoding was in use.
+
 === 0.1.5 / 2011-03-08
 * Fixed a bug due to the fact that poppler_utils no longer leaves off the extra padded zero.
+
 === 0.1.4 / 2010-11-15
 * Fixed a bug concerning documents with page counts that are exact powers of 10. poppler_utils prepends one less zero to the page counts when a document count is a power of 10. This is now fixed in PDFToImage.
 
@@ -16,4 +21,3 @@
 === 0.1.1 / 2010-11-10
 
 * Initial release:
-
