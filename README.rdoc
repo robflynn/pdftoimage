@@ -40,4 +40,4 @@ ImageMagick
 
 Copyright (c) 2018 Rob Flynn
 
-See LICENSE.txt for details.
+See LICENSE for details.
