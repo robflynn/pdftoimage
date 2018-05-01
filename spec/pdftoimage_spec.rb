@@ -3,7 +3,7 @@ require 'pdftoimage'
 
 describe PDFToImage do
     it "should have a VERSION constant" do
-        PDFToImage.const_get('VERSION').should_not be_empty
+        expect(PDFToImage.const_get('VERSION')).not_to be_empty
     end
 
     #  I will find a better solution for having this commented out. I do not
