@@ -1,0 +1,139 @@
+# By default, let's disable ALL cops. We'll manually enable
+# the ones we care about as we decide upon them.
+AllCops:
+  TargetRubyVersion: 2.4
+  TargetRailsVersion: 4.2
+  DisabledByDefault: true
+  Exclude:
+    - '**/vendor/**/*'
+
+#############
+# Style
+#############
+
+# Prefer Foo.method over Foo::method
+Style/ColonMethodCall:
+  Enabled: true
+
+# Methods that do not take arguments should not have parenthesis
+Style/DefWithParentheses:
+  Enabled: true
+
+# Do not use braces for hash literals when they are the last argument of a
+# method call. This makes option hashes as the final argument look much
+# nicer when we call them.
+Style/BracesAroundHashParameters:
+  Enabled: true
+  EnforcedStyle: context_dependent
+
+# Use Ruby 1.9 style hashes as opposed to fat arrow / rocket hashes/ `foo: 'bar'` not `:foo => 'bar'`
+Style/HashSyntax:
+  Enabled: true
+  EnforcedStyle: ruby19_no_mixed_keys
+
+Style/EachForSimpleLoop:
+  Enabled: true
+
+#############
+# Layout
+#############
+
+# Although it is not what the rails guidelines say (2 spaces), we're gonna use four spaces.
+# I'm old and I like four. Hey, at least it's not 8, right? Tabs were causing problems
+# so we're not going to use those.
+Layout/IndentationWidth:
+  Enabled: true
+  Width: 4
+
+# Use consistent indentation within blocks
+Layout/IndentationConsistency:
+  Enabled: true
+
+# Align `when` with `case`.
+Layout/CaseIndentation:
+  Enabled: true
+
+# Align else statements.
+Layout/ElseAlignment:
+  Enabled: true
+
+Layout/EmptyLines:
+  Enabled: true
+
+Layout/AlignArray:
+  Enabled: true
+
+Layout/AlignHash:
+  Enabled: true
+
+Layout/IndentArray:
+  Enabled: true
+  EnforcedStyle: consistent
+
+Layout/IndentHash:
+  Enabled: true
+  EnforcedStyle: consistent
+
+# Align comments with method definitions.
+Layout/CommentIndentation:
+  Enabled: true
+
+Layout/EmptyLineAfterMagicComment:
+  Enabled: true
+
+# Comments must have a space after the hash
+Layout/LeadingCommentSpace:
+  Enabled: true
+
+# Always put a space after clon
+Layout/SpaceAfterColon:
+  Enabled: true
+
+# Always put a space after comma
+Layout/SpaceAfterComma:
+  Enabled: true
+
+# Use `foo {}` not `foo{}` for blocks bodies.
+Layout/SpaceBeforeBlockBraces:
+  Enabled: true
+
+# Use `foo { bar }` not `foo {bar}`.
+Layout/SpaceInsideBlockBraces:
+  Enabled: true
+
+# Use `{ a: 1 }` not `{a:1}`.
+Layout/SpaceInsideHashLiteralBraces:
+  Enabled: true
+
+# In a regular class definition, no empty lines around the body.
+Layout/EmptyLinesAroundClassBody:
+  Enabled: true
+
+# In a regular method definition, no empty lines around the body.
+Layout/EmptyLinesAroundMethodBody:
+  Enabled: true
+
+# In a regular module definition, no empty lines around the body.
+Layout/EmptyLinesAroundModuleBody:
+  Enabled: true
+
+
+# Commas should not be preceded by spaces
+Layout/SpaceBeforeComma:
+  Enabled: true
+
+# No trailing whitespace.
+Layout/TrailingWhitespace:
+  Enabled: true
+
+
+#############
+# Linting
+#############
+
+# Align `end` with the matching keyword or starting expression except for
+# assignments, where it should be aligned with the LHS.
+Lint/EndAlignment:
+  Enabled: true
+  EnforcedStyleAlignWith: variable
+  AutoCorrect: true

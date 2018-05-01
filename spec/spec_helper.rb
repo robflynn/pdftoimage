@@ -2,10 +2,10 @@ require 'rubygems'
 require 'spork'
 
 Spork.prefork do
-  require 'rspec'
-  require 'pdftoimage/version'
+    require 'rspec'
+    require 'pdftoimage/version'
 
-  include PDFToImage
+    include PDFToImage
 end
 
 Spork.each_run do
