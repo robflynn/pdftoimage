@@ -51,6 +51,14 @@ describe PDFToImage do
             end
             counter.should equal 3
         end
+
+        it "should to use Shellwords" do
+            counter = 0
+            PDFToImage.open("spec/include blanks.pdf") do |page|
+                counter = counter + 1
+            end
+            counter.should equal 3
+        end
     end
 
     describe "multi page documents" do

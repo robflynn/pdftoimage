@@ -58,7 +58,7 @@ module PDFToImage
                 cmd += "#{@args.join(' ')} "
             end
 
-            cmd += "#{@filename} #{outname}"
+            cmd += "#{Shellwords.escape @filename} #{Shellwords.escape outname}"
 
             PDFToImage.exec(cmd)
 
@@ -79,7 +79,7 @@ module PDFToImage
 
         def generate_temp_file
             if @opened == false
-                cmd = "pdftoppm -png -f #{@page} -l #{@page} #{@pdf_name} #{@filename}"
+                cmd = "pdftoppm -png -f #{@page} -l #{@page} #{@pdf_name} #{Shellwords.escape @filename}"
                 PDFToImage.exec(cmd)
                 @filename = "#{@filename}-#{page_suffix}.png"
                 @opened = true
