@@ -8,6 +8,7 @@ module PDFToImage
         attr_reader :height
         attr_reader :page
         attr_reader :args
+        attr_reader :pdf_args
         attr_reader :opened
 
         # ImageMagick methods that we currently support.
@@ -16,9 +17,24 @@ module PDFToImage
             "quality"
         ]
 
+        # pdftoppm methods that we currently support.
+        PDF_IMAGE_METHODS = [
+            "r",
+            "rx",
+            "ry"
+        ]
+
         CUSTOM_IMAGE_METHODS.each do |method|
             define_method(method.to_sym) do |*args|
                 @args << "-#{method} #{args.join(' ')}"
+
+                self
+            end
+        end
+
+        PDF_IMAGE_METHODS.each do |method|
+            define_method(method.to_sym) do |*args|
+                @pdf_args << "-#{method} #{args.join(' ')}"
 
                 self
             end
@@ -34,6 +50,7 @@ module PDFToImage
         #
         def initialize(pdf_name, filename, page, page_size, page_count)
             @args = []
+            @pdf_args = []
 
             @pdf_name = pdf_name
             @filename = filename
@@ -79,7 +96,7 @@ module PDFToImage
 
         def generate_temp_file
             if @opened == false
-                cmd = "pdftoppm -png -f #{@page} -l #{@page} #{@pdf_name} #{@filename}"
+                cmd = "pdftoppm -png -f #{@page} #{@pdf_args.join(" ")} -l #{@page} #{@pdf_name} #{@filename}"
                 PDFToImage.exec(cmd)
                 @filename = "#{@filename}-#{page_suffix}.png"
                 @opened = true
