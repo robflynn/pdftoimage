@@ -24,6 +24,13 @@ to be able to parse without error.
   PDFToImage.open('anotherpdf.pdf') do |page|
     page.resize('150').quality('80%').save('out/thumbnail-#{page.page}.jpg")
   end
+  
+  require 'pdftoimage'
+  PDFToImage.open('anotherpdf.pdf') do |page|
+    page.r(350).save('out/thumbnail-#{page.page}.jpg") #set dpi
+  end
+  
+  
 
 == Requirements
 
