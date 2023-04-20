@@ -14,4 +14,5 @@ Gem::Specification.new do |s|
     }
 
     s.add_dependency 'iconv', '~> 1.0'
+    s.add_dependency 'shellwords', '~> 0.1.0'
 end

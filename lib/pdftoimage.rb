@@ -3,6 +3,7 @@ require 'pdftoimage/image'
 
 require 'tmpdir'
 require 'iconv'
+require 'shellwords'
 
 module PDFToImage
     class PDFError < RuntimeError; end
