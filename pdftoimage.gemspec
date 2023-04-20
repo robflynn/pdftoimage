@@ -8,7 +8,6 @@ Gem::Specification.new do |s|
     s.files       = Dir.glob("{bin,lib}/**/*") + %w(LICENSE README.rdoc ChangeLog.rdoc)
     s.homepage    = 'https://github.com/robflynn/pdftoimage'
     s.license     = 'MIT'
-    s.has_rdoc    = true
     s.metadata    = {
         'changelog_uri'     => 'https://github.com/robflynn/pdftoimage/blob/master/ChangeLog.rdoc',
         'source_code_uri'   => 'https://github.com/robflynn/pdftoimage/'
