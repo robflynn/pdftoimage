@@ -10,4 +10,5 @@ group :development do
     gem 'spork'
     gem 'rubocop'
     gem 'rdoc'
+    gem 'mini_magick'
 end

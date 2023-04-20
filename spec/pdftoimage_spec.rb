@@ -1,5 +1,6 @@
 require 'spec_helper'
 require 'pdftoimage'
+require 'mini_magick'
 
 describe PDFToImage do
     it "should have a VERSION constant" do
@@ -89,5 +90,29 @@ describe PDFToImage do
             expect(counter).to eq(11)
         end
 
+        it "should allow for specifying resolution dpi" do
+            pages = PDFToImage.open('spec/11pages.pdf')
+            page = pages[0]
+
+            # Save the page in 300 dpi
+            result = page.r(300).save("spec/300dpi-test.jpg")
+
+            image = MiniMagick::Image.open("spec/300dpi-test.jpg")
+
+            # Get the resolution
+            resolution = image["%x"]
+
+            # Determine which units we're using (DPCM or DPI)
+            units = image["%[units]"]
+
+            # If it's in DPCM convert it to inches
+            if units == "PixelsPerCentimeter"
+                resolution = (resolution.to_f * 2.54).ceil
+            end
+
+            expect(resolution).to eq(300)
+
+            File.unlink("spec/300dpi-test.jpg")
+        end
     end
 end

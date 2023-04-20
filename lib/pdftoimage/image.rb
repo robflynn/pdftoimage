@@ -75,7 +75,7 @@ module PDFToImage
                 cmd += "#{@args.join(' ')} "
             end
 
-            cmd += "#{Shellwords.escape @filename} #{Shellwords.escape outname}"
+            cmd += "#{Shellwords.escape(@filename)} #{Shellwords.escape(outname)}"
 
             PDFToImage.exec(cmd)
 
