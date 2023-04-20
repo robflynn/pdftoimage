@@ -1,4 +1,4 @@
-=== 0.1.7 / 2018-05-01
+=== 0.2.0 / 2023-04-20
 * Fixed use of deprecated File.exists? method (pr#4 from Thornolf)
 * File paths are now escaped to properly handle spaces and special characters (pr#3 from drnic)
 * Specifying dpi resolution is now supported (pr#5 from lehf)
