@@ -46,6 +46,6 @@ ImageMagick
 
 == Copyright
 
-Copyright (c) 2018 Rob Flynn
+Copyright (c) 2023 Rob Flynn
 
 See LICENSE for details.
