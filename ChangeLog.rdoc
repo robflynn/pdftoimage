@@ -1,5 +1,10 @@
 === 0.1.7 / 2018-05-01
-* Updated yard to resolve a vulnerability. 
+* Fixed use of deprecated File.exists? method (pr#4 from Thornolf)
+* File paths are now escaped to properly handle spaces and special characters (pr#3 from drnic)
+* Specifying dpi resolution is now supported (pr#5 from lehf)
+
+=== 0.1.7 / 2018-05-01
+* Updated yard to resolve a vulnerability.
 
 === 0.1.6 / 2011-07-13
 * Buggy PDF generators try to encode CreationDate and ModDate as UTF-16 as opposed to ASCII.  This leads to parsing errors where the code was assuming UTF-8 encoding was in use.
