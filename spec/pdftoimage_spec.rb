@@ -17,7 +17,7 @@ describe PDFToImage do
     #       @pages = PDFToImage.open('spec/weird_utf8.pdf')
     #   @pages.size.should equal 1
     #   @pages[0].resize('50%').save('spec/tmp1.jpg')
-    #   File.exists?('spec/tmp1.jpg').should equal true
+    #   File.exist?('spec/tmp1.jpg').should equal true
     #   File.unlink('spec/tmp1.jpg')
     #    end
     #  end
@@ -25,14 +25,15 @@ describe PDFToImage do
     describe "3pages.pdf" do
         it "should have three pages" do
             @pages = PDFToImage.open('spec/3pages.pdf')
-            @pages.size.should equal 3
+            expect(@pages.size).to eq(3)
         end
 
         it "should allow saving" do
             @pages = PDFToImage.open('spec/3pages.pdf')
             @pages.each do |page|
                 page.save('spec/tmp.jpg')
-                File.exists?('spec/tmp.jpg').should equal true
+                file_exists = File.exist?('spec/tmp.jpg')
+                expect(file_exists).to eq(true)
                 File.unlink('spec/tmp.jpg')
             end
         end
@@ -40,13 +41,21 @@ describe PDFToImage do
         it "should allow resizing and quality control" do
             @pages = PDFToImage.open('spec/3pages.pdf')
             @pages[0].resize('50%').quality('80%').save('spec/tmp2.jpg')
-            File.exists?('spec/tmp2.jpg').should equal true
+            expect(File.exist?('spec/tmp2.jpg')).to eq(true)
             File.unlink('spec/tmp2.jpg')
         end
 
         it "should work with blocks" do
             counter = 0
             PDFToImage.open("spec/3pages.pdf") do |page|
+                counter = counter + 1
+            end
+            expect(counter).to eq(3)
+        end
+
+        it "should use Shellwords to escape filenames" do
+            counter = 0
+            PDFToImage.open("spec/include blanks.pdf") do |page|
                 counter = counter + 1
             end
             counter.should equal 3
@@ -58,24 +67,26 @@ describe PDFToImage do
             counter = 0
             PDFToImage.open('spec/10pages.pdf') do |page|
                 result = page.save("spec/10pg-#{page.page}.jpg")
-                File.exists?("spec/10pg-#{page.page}.jpg").should equal true
+                file_exists = File.exist?("spec/10pg-#{page.page}.jpg")
+                expect(file_exists).to eq(true)
                 File.unlink("spec/10pg-#{page.page}.jpg")
                 counter = counter + 1
             end
 
-            counter.should equal 10
+            expect(counter).to eq(10)
         end
 
         it "should parse 11 page counts" do
             counter = 0
             PDFToImage.open('spec/11pages.pdf') do |page|
                 result = page.save("spec/11pg-#{page.page}.jpg")
-                File.exists?("spec/11pg-#{page.page}.jpg").should equal true
+                file_exists = File.exist?("spec/11pg-#{page.page}.jpg")
+                expect(file_exists).to eq(true)
                 File.unlink("spec/11pg-#{page.page}.jpg")
                 counter = counter + 1
             end
 
-            counter.should equal 11
+            expect(counter).to eq(11)
         end
 
     end

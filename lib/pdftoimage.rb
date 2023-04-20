@@ -3,6 +3,7 @@ require 'pdftoimage/image'
 
 require 'tmpdir'
 require 'iconv'
+require 'shellwords'
 
 module PDFToImage
     class PDFError < RuntimeError; end
@@ -33,7 +34,7 @@ module PDFToImage
         #
         # @return [Array] An array of images
         def open(filename, &block)
-            if not File.exists?(filename)
+            if not File.exist?(filename)
                 raise PDFError, "File '#{filename}' not found."
             end
 
@@ -73,7 +74,7 @@ module PDFToImage
         private
 
         def page_size(filename, page)
-            cmd = "pdfinfo -f #{page} -l #{page} #{filename} | grep Page"
+            cmd = "pdfinfo -f #{page} -l #{page} #{Shellwords.escape(filename)} | grep Page"
             output = exec(cmd)
 
             matches = /^Page.*?size:.*?(\d+).*?(\d+)/.match(output)
@@ -91,7 +92,7 @@ module PDFToImage
         end
 
         def page_count(filename)
-            cmd = "pdfinfo #{filename} | grep Pages"
+            cmd = "pdfinfo #{Shellwords.escape(filename)} | grep Pages"
             output = exec(cmd)
             matches = /^Pages:.*?(\d+)$/.match(output)
             if matches.nil?
