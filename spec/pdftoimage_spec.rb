@@ -53,7 +53,7 @@ describe PDFToImage do
             expect(counter).to eq(3)
         end
 
-        it "should to use Shellwords" do
+        it "should use Shellwords to escape filenames" do
             counter = 0
             PDFToImage.open("spec/include blanks.pdf") do |page|
                 counter = counter + 1
