@@ -33,7 +33,7 @@ module PDFToImage
         #
         # @return [Array] An array of images
         def open(filename, &block)
-            if not File.exists?(filename)
+            if not File.exist?(filename)
                 raise PDFError, "File '#{filename}' not found."
             end
 

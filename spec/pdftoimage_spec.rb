@@ -17,7 +17,7 @@ describe PDFToImage do
     #       @pages = PDFToImage.open('spec/weird_utf8.pdf')
     #   @pages.size.should equal 1
     #   @pages[0].resize('50%').save('spec/tmp1.jpg')
-    #   File.exists?('spec/tmp1.jpg').should equal true
+    #   File.exist?('spec/tmp1.jpg').should equal true
     #   File.unlink('spec/tmp1.jpg')
     #    end
     #  end
@@ -32,7 +32,7 @@ describe PDFToImage do
             @pages = PDFToImage.open('spec/3pages.pdf')
             @pages.each do |page|
                 page.save('spec/tmp.jpg')
-                file_exists = File.exists?('spec/tmp.jpg')
+                file_exists = File.exist?('spec/tmp.jpg')
                 expect(file_exists).to eq(true)
                 File.unlink('spec/tmp.jpg')
             end
@@ -41,7 +41,7 @@ describe PDFToImage do
         it "should allow resizing and quality control" do
             @pages = PDFToImage.open('spec/3pages.pdf')
             @pages[0].resize('50%').quality('80%').save('spec/tmp2.jpg')
-            expect(File.exists?('spec/tmp2.jpg')).to eq(true)
+            expect(File.exist?('spec/tmp2.jpg')).to eq(true)
             File.unlink('spec/tmp2.jpg')
         end
 
@@ -59,7 +59,7 @@ describe PDFToImage do
             counter = 0
             PDFToImage.open('spec/10pages.pdf') do |page|
                 result = page.save("spec/10pg-#{page.page}.jpg")
-                file_exists = File.exists?("spec/10pg-#{page.page}.jpg")
+                file_exists = File.exist?("spec/10pg-#{page.page}.jpg")
                 expect(file_exists).to eq(true)
                 File.unlink("spec/10pg-#{page.page}.jpg")
                 counter = counter + 1
@@ -72,7 +72,7 @@ describe PDFToImage do
             counter = 0
             PDFToImage.open('spec/11pages.pdf') do |page|
                 result = page.save("spec/11pg-#{page.page}.jpg")
-                file_exists = File.exists?("spec/11pg-#{page.page}.jpg")
+                file_exists = File.exist?("spec/11pg-#{page.page}.jpg")
                 expect(file_exists).to eq(true)
                 File.unlink("spec/11pg-#{page.page}.jpg")
                 counter = counter + 1
