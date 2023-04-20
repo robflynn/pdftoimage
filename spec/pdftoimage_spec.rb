@@ -91,26 +91,37 @@ describe PDFToImage do
         end
 
         it "should allow for specifying resolution dpi" do
+            # This test is a little weird in that we're setting
+            # the value to dpi, but it seems to be stored as
+            # a truncated DPCM.  So, 350, for example, should
+            # be 137.79527559055118, but it's stored as 137.
+            #
+            # This keeps us from properly converting between dpcm and dpi
+            # and back again.  I'm not sure if this is a bug in the underlying
+            # libraries of if that's just the way the spec works, but we'll
+            # emulate that here and convert to dpcm before checking.
+            target_dpi = 350
+            target_dpcm = (target_dpi.to_f / 2.54).to_i
+
             pages = PDFToImage.open('spec/11pages.pdf')
             page = pages[0]
 
             # Save the page in 300 dpi
-            result = page.r(300).save("spec/300dpi-test.jpg")
+            result = page.r(target_dpi).save("spec/300dpi-test.jpg")
 
             image = MiniMagick::Image.open("spec/300dpi-test.jpg")
 
             # Get the resolution
-            resolution = image["%x"]
+            resolution = image["%x"].to_i
 
             # Determine which units we're using (DPCM or DPI)
             units = image["%[units]"]
 
-            # If it's in DPCM convert it to inches
-            if units == "PixelsPerCentimeter"
-                resolution = (resolution.to_f * 2.54).ceil
+            if units == "PixelsPerInch"
+                resolution = (resolution.to_f / 2.54).to_i
             end
 
-            expect(resolution).to eq(300)
+            expect(resolution).to eq(target_dpcm)
 
             File.unlink("spec/300dpi-test.jpg")
         end

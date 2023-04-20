@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    pdftoimage (0.1.7)
+    pdftoimage (0.2.0)
       iconv (~> 1.0)
       shellwords (~> 0.1.0)
 
