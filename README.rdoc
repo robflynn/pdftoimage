@@ -31,6 +31,11 @@ to be able to parse without error.
     page.r(350).save('out/thumbnail-#{page.page}.jpg")
   end
 
+  require 'pdftoimage'
+  PDFToImage.open('anotherpdf.pdf') do |page|
+    # Set the bounds of the area you want to extract as an image
+    page.x(0).y(300).width(100).height(300).save('out/thumbnail-#{page.page}.jpg")
+  end
 
 
 == Requirements
