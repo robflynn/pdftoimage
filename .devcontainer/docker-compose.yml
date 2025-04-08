@@ -1,0 +1,36 @@
+version: '3'
+
+volumes:
+  bundle:
+  gem_documentation:
+  postgres:
+  asdf:
+  shared_volume:
+
+services:
+  app:
+    user: vscode
+
+    build:
+      context: ..
+      dockerfile: .devcontainer/Dockerfile
+      args:
+        USER_UID: 1000
+        USER_GID: 1000
+        RUBY_VERSION: 2.6.8
+
+    volumes:
+      - ..:/workspace:cached
+      - $HOME/.ssh:/home/vscode/.ssh
+      - bundle:/usr/local/bundle/
+      - $HOME/.yard:/home/vscode/.yard
+      - asdf:/home/vscode/.asdf
+
+    command: sleep infinity
+
+    environment:
+      OPENSSL_CONF: "/etc/ssl"
+      EDITOR: "code --wait"
+
+    ports:
+      - "5500:5500"
