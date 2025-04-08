@@ -21,7 +21,9 @@ module PDFToImage
         PDF_IMAGE_METHODS = [
             "r",
             "rx",
-            "ry"
+            "ry",
+            "x",
+            "y"
         ]
 
         CUSTOM_IMAGE_METHODS.each do |method|
@@ -90,6 +92,18 @@ module PDFToImage
             else
                 return 1
             end
+        end
+
+        def width(*args)
+            @pdf_args << "-W #{args.join(' ')}"
+
+            self
+        end
+
+        def height(*args)
+            @pdf_args << "-H #{args.join(' ')}"
+
+            self
         end
 
       private
