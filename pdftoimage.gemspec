@@ -13,6 +13,8 @@ Gem::Specification.new do |s|
         'source_code_uri'   => 'https://github.com/robflynn/pdftoimage/'
     }
 
+    s.required_ruby_version = '>= 2.7'
+
     s.add_dependency 'shellwords', '~> 0.2.2'
     s.add_dependency 'mini_magick', '~> 4.0'
 end
