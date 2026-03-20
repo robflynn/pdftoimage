@@ -2,7 +2,6 @@ require 'pdftoimage/version'
 require 'pdftoimage/image'
 
 require 'tmpdir'
-require 'iconv'
 require 'shellwords'
 require 'mini_magick'
 require 'open-uri'
