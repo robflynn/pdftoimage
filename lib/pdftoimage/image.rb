@@ -26,7 +26,7 @@ module PDFToImage
 
         CUSTOM_IMAGE_METHODS.each do |method|
             define_method(method.to_sym) do |*args|
-                @args << "-#{method} #{args.join(' ')}"
+                @args << [method, args]
 
                 self
             end
@@ -69,15 +69,11 @@ module PDFToImage
         def save(outname)
             generate_temp_file
 
-            cmd = "convert "
-
-            if not @args.empty?
-                cmd += "#{@args.join(' ')} "
+            image = MiniMagick::Image.open(@filename)
+            @args.each do |method, args|
+                image.send(method, *args)
             end
-
-            cmd += "#{Shellwords.escape(@filename)} #{Shellwords.escape(outname)}"
-
-            PDFToImage.exec(cmd)
+            image.write(outname)
 
             return true
         end

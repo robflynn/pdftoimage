@@ -15,4 +15,5 @@ Gem::Specification.new do |s|
 
     s.add_dependency 'iconv', '~> 1.0'
     s.add_dependency 'shellwords', '~> 0.2.2'
+    s.add_dependency 'mini_magick', '>= 4.0'
 end
