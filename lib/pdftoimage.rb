@@ -4,6 +4,7 @@ require 'pdftoimage/image'
 require 'tmpdir'
 require 'iconv'
 require 'shellwords'
+require 'mini_magick'
 
 module PDFToImage
     class PDFError < RuntimeError; end
@@ -18,13 +19,6 @@ module PDFToImage
         raise(PDFToImage::PDFError, "poppler_utils not installed") unless tmp.index('Poppler')
     rescue Errno::ENOENT
         raise PDFToImage::PDFError, "poppler_utils not installed"
-    end
-
-    begin
-        tmp = `identify -version 2>&1`
-        raise(PDFToImage::PDFError, "ImageMagick not installed") unless tmp.index('ImageMagick')
-    rescue Errno::ENOENT
-        raise PDFToImage::PDFError, "ImageMagick not installed"
     end
 
     class << self
