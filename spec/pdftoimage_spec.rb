@@ -207,6 +207,27 @@ describe PDFToImage do
         end
     end
 
+    describe "crop" do
+        it "should save a cropped image" do
+            pages = PDFToImage.open('spec/3pages.pdf')
+            pages[0].crop(0, 0, 100, 100).save('spec/crop_tmp.jpg')
+            expect(File.exist?('spec/crop_tmp.jpg')).to eq(true)
+
+            image = MiniMagick::Image.open('spec/crop_tmp.jpg')
+            expect(image.width).to eq(100)
+            expect(image.height).to eq(100)
+
+            File.unlink('spec/crop_tmp.jpg')
+        end
+
+        it "should be chainable with other methods" do
+            pages = PDFToImage.open('spec/3pages.pdf')
+            pages[0].crop(0, 0, 200, 200).quality('80%').save('spec/crop_chain_tmp.jpg')
+            expect(File.exist?('spec/crop_chain_tmp.jpg')).to eq(true)
+            File.unlink('spec/crop_chain_tmp.jpg')
+        end
+    end
+
     describe "saving to IO" do
         it "should produce identical output to saving to a file" do
             pages = PDFToImage.open('spec/3pages.pdf')

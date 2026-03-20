@@ -78,6 +78,12 @@ module PDFToImage
             return true
         end
 
+        def crop(x, y, w, h)
+            @pdf_args.push("-x #{x}", "-y #{y}", "-W #{w}", "-H #{h}")
+
+            self
+        end
+
         def <=>(img)
             if @page == img.page
                 return 0
