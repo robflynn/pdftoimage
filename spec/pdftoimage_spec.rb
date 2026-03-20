@@ -158,4 +158,68 @@ describe PDFToImage do
             }.to raise_error(PDFToImage::PDFError, /Failed to download/)
         end
     end
+
+    describe "IO input" do
+        it "should open a PDF from an IO object" do
+            File.open('spec/3pages.pdf', 'rb') do |io|
+                pages = PDFToImage.open(io)
+                expect(pages.size).to eq(3)
+            end
+        end
+
+        it "should open a PDF from a StringIO" do
+            data = File.read('spec/3pages.pdf', mode: 'rb')
+            io = StringIO.new(data)
+            pages = PDFToImage.open(io)
+            expect(pages.size).to eq(3)
+        end
+
+        it "should save pages from an IO-opened PDF" do
+            File.open('spec/3pages.pdf', 'rb') do |io|
+                pages = PDFToImage.open(io)
+                pages[0].save('spec/io_tmp.jpg')
+                expect(File.exist?('spec/io_tmp.jpg')).to eq(true)
+                File.unlink('spec/io_tmp.jpg')
+            end
+        end
+    end
+
+    describe "from_blob" do
+        it "should open a PDF from binary data" do
+            data = File.read('spec/3pages.pdf', mode: 'rb')
+            pages = PDFToImage.from_blob(data)
+            expect(pages.size).to eq(3)
+        end
+
+        it "should save pages from a blob-opened PDF" do
+            data = File.read('spec/3pages.pdf', mode: 'rb')
+            pages = PDFToImage.from_blob(data)
+            pages[0].save('spec/blob_tmp.jpg')
+            expect(File.exist?('spec/blob_tmp.jpg')).to eq(true)
+            File.unlink('spec/blob_tmp.jpg')
+        end
+
+        it "should work with blocks" do
+            data = File.read('spec/3pages.pdf', mode: 'rb')
+            counter = 0
+            PDFToImage.from_blob(data) { |page| counter += 1 }
+            expect(counter).to eq(3)
+        end
+    end
+
+    describe "saving to IO" do
+        it "should produce identical output to saving to a file" do
+            pages = PDFToImage.open('spec/3pages.pdf')
+
+            pages[0].save('spec/io_compare_tmp.jpg')
+            file_content = File.read('spec/io_compare_tmp.jpg', mode: 'rb')
+            File.unlink('spec/io_compare_tmp.jpg')
+
+            io = StringIO.new(''.b)
+            pages[0].save(io)
+            io.rewind
+
+            expect(io.read).to eq(file_content)
+        end
+    end
 end
