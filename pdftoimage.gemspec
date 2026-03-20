@@ -13,7 +13,6 @@ Gem::Specification.new do |s|
         'source_code_uri'   => 'https://github.com/robflynn/pdftoimage/'
     }
 
-    s.add_dependency 'iconv', '~> 1.0'
     s.add_dependency 'shellwords', '~> 0.2.2'
     s.add_dependency 'mini_magick', '>= 4.0'
 end
