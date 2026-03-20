@@ -5,6 +5,8 @@ require 'tmpdir'
 require 'iconv'
 require 'shellwords'
 require 'mini_magick'
+require 'open-uri'
+require 'uri'
 
 module PDFToImage
     class PDFError < RuntimeError; end
@@ -28,6 +30,8 @@ module PDFToImage
         #
         # @return [Array] An array of images
         def open(filename, &block)
+            filename = download_file(filename) if url?(filename)
+
             if not File.exist?(filename)
                 raise PDFError, "File '#{filename}' not found."
             end
@@ -94,6 +98,25 @@ module PDFToImage
             end
 
             return matches[1].to_i
+        end
+
+        def url?(filename)
+            uri = URI.parse(filename)
+            uri.is_a?(URI::HTTP) || uri.is_a?(URI::HTTPS)
+        rescue URI::InvalidURIError
+            false
+        end
+
+        def download_file(url)
+            tempfile = File.join(@@pdf_temp_dir, "#{random_name}.pdf")
+            remote = URI.open(url)
+            File.open(tempfile, 'wb') do |file|
+                file.write(remote.read)
+            end
+            remote.close
+            tempfile
+        rescue OpenURI::HTTPError, SocketError, Errno::ECONNREFUSED => e
+            raise PDFError, "Failed to download '#{url}': #{e.message}"
         end
 
         # Generate a random file name in the system's tmp folder

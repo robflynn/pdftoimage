@@ -59,7 +59,7 @@ describe PDFToImage do
             PDFToImage.open("spec/include blanks.pdf") do |page|
                 counter = counter + 1
             end
-            counter.should equal 3
+            expect(counter).to eq(3)
         end
     end
 
@@ -124,6 +124,38 @@ describe PDFToImage do
             expect(resolution).to eq(target_dpcm)
 
             File.unlink("spec/300dpi-test.jpg")
+        end
+    end
+
+    describe "remote URLs" do
+        after(:each) do
+            @local_pdf&.close
+        end
+
+        it "should download and open a PDF from a URL" do
+            @local_pdf = File.open('spec/3pages.pdf', 'rb')
+            allow(URI).to receive(:open).with("http://example.com/test.pdf").and_return(@local_pdf)
+
+            pages = PDFToImage.open("http://example.com/test.pdf")
+            expect(pages.size).to eq(3)
+        end
+
+        it "should save pages from a remote PDF" do
+            @local_pdf = File.open('spec/3pages.pdf', 'rb')
+            allow(URI).to receive(:open).with("http://example.com/test.pdf").and_return(@local_pdf)
+
+            pages = PDFToImage.open("http://example.com/test.pdf")
+            pages[0].save('spec/remote_tmp.jpg')
+            expect(File.exist?('spec/remote_tmp.jpg')).to eq(true)
+            File.unlink('spec/remote_tmp.jpg')
+        end
+
+        it "should raise PDFError when download fails" do
+            allow(URI).to receive(:open).and_raise(OpenURI::HTTPError.new("404 Not Found", StringIO.new))
+
+            expect {
+                PDFToImage.open("http://example.com/nonexistent.pdf")
+            }.to raise_error(PDFToImage::PDFError, /Failed to download/)
         end
     end
 end
