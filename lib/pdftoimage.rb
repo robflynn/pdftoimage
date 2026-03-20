@@ -30,13 +30,7 @@ module PDFToImage
         #
         # @return [Array] An array of images
         def open(source, &block)
-            filename = if source.respond_to?(:read)
-                write_to_tempfile(source.read)
-            elsif url?(source)
-                download_file(source)
-            else
-                source
-            end
+            filename = resolve_source(source)
 
             if not File.exist?(filename)
                 raise PDFError, "File '#{filename}' not found."
@@ -114,6 +108,16 @@ module PDFToImage
             end
 
             return matches[1].to_i
+        end
+
+        def resolve_source(source)
+            if source.respond_to?(:read)
+                write_to_tempfile(source.read)
+            elsif url?(source)
+                download_file(source)
+            else
+                source
+            end
         end
 
         def write_to_tempfile(data)
