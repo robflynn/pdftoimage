@@ -68,6 +68,14 @@ pages[0].save(io)
 io.rewind
 ```
 
+### Cropping a region
+
+```ruby
+PDFToImage.open('report.pdf') do |page|
+  page.crop(0, 300, 100, 300).save("out/cropped-#{page.page}.jpg")
+end
+```
+
 ### Setting resolution
 
 ```ruby
