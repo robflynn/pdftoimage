@@ -6,6 +6,7 @@ require 'shellwords'
 require 'mini_magick'
 require 'open-uri'
 require 'uri'
+require 'stringio'
 
 module PDFToImage
     class PDFError < RuntimeError; end
@@ -25,11 +26,11 @@ module PDFToImage
     class << self
         # Opens a PDF document and prepares it for splitting into images.
         #
-        # @param filename [String] The filename of the PDF to open
+        # @param source [String, IO] A filename, URL, or IO object containing PDF data
         #
         # @return [Array] An array of images
-        def open(filename, &block)
-            filename = download_file(filename) if url?(filename)
+        def open(source, &block)
+            filename = resolve_source(source)
 
             if not File.exist?(filename)
                 raise PDFError, "File '#{filename}' not found."
@@ -49,6 +50,16 @@ module PDFToImage
             images.each(&block) if block_given?
 
             return images
+        end
+
+        # Opens a PDF from raw binary data.
+        #
+        # @param data [String] Binary string of PDF content
+        #
+        # @return [Array] An array of images
+        def from_blob(data, &block)
+            filename = write_to_tempfile(data)
+            open(filename, &block)
         end
 
         # Executes the specified command, returning the output.
@@ -97,6 +108,22 @@ module PDFToImage
             end
 
             return matches[1].to_i
+        end
+
+        def resolve_source(source)
+            if source.respond_to?(:read)
+                write_to_tempfile(source.read)
+            elsif url?(source)
+                download_file(source)
+            else
+                source
+            end
+        end
+
+        def write_to_tempfile(data)
+            tempfile = File.join(@@pdf_temp_dir, "#{random_name}.pdf")
+            File.open(tempfile, 'wb') { |f| f.write(data) }
+            tempfile
         end
 
         def url?(filename)

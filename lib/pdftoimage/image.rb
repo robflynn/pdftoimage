@@ -1,3 +1,5 @@
+require 'tempfile'
+
 module PDFToImage
     # A class which is instantiated by PDFToImage when a PDF document
     # is opened.
@@ -67,13 +69,11 @@ module PDFToImage
         # @param outname [String] The output filename of the image
         #
         def save(outname)
-            generate_temp_file
-
-            image = MiniMagick::Image.open(@filename)
-            @args.each do |method, args|
-                image.send(method, *args)
+            if outname.respond_to?(:write)
+                save_to_io(outname)
+            else
+                save_to_file(outname)
             end
-            image.write(outname)
 
             return true
         end
@@ -89,6 +89,29 @@ module PDFToImage
         end
 
       private
+
+        def save_to_file(outname)
+            generate_temp_file
+
+            image = MiniMagick::Image.open(@filename)
+            @args.each do |method, args|
+                image.send(method, *args)
+            end
+            image.write(outname)
+        end
+
+        def save_to_io(io)
+            tempfile = Tempfile.new(['pdftoimage', '.png'])
+            tempfile.binmode
+            begin
+                save_to_file(tempfile.path)
+                tempfile.rewind
+                IO.copy_stream(tempfile, io)
+            ensure
+                tempfile.close
+                tempfile.unlink
+            end
+        end
 
         def generate_temp_file
             if @opened == false
