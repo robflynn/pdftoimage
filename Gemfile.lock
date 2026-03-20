@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    pdftoimage (0.3.0)
+    pdftoimage (0.3.1)
       mini_magick (~> 4.0)
       shellwords (~> 0.2.2)
 
@@ -121,7 +121,7 @@ CHECKSUMS
   minitest-autotest (1.2.1) sha256=971ca79a6910ab4c6348837415981662e98bebb03656df203464c2d081b28c8d
   parallel (1.27.0) sha256=4ac151e1806b755fb4e2dc2332cbf0e54f2e24ba821ff2d3dcf86bf6dc4ae130
   parser (3.3.10.2) sha256=6f60c84aa4bdcedb6d1a2434b738fe8a8136807b6adc8f7f53b97da9bc4e9357
-  pdftoimage (0.3.0)
+  pdftoimage (0.3.1)
   prism (1.9.0) sha256=7b530c6a9f92c24300014919c9dcbc055bf4cdf51ec30aed099b06cd6674ef85
   psych (5.3.1) sha256=eb7a57cef10c9d70173ff74e739d843ac3b2c019a003de48447b2963d81b1974
   public_suffix (7.0.5) sha256=1a8bb08f1bbea19228d3bed6e5ed908d1cb4f7c2726d18bd9cadf60bc676f623

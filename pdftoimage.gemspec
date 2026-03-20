@@ -1,6 +1,8 @@
+require_relative 'lib/pdftoimage/version'
+
 Gem::Specification.new do |s|
     s.name        = 'pdftoimage'
-    s.version     = '0.3.0'
+    s.version     = PDFToImage::VERSION
     s.summary     = 'A ruby gem for converting PDF documents into a series of images.'
     s.description = 'A ruby gem for converting PDF documents into a series of images. This module is based off poppler_utils and ImageMagick.'
     s.authors     = ['Rob Flynn']
