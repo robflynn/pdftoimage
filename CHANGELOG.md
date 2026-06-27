@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com).
 
+## [0.3.2] - 2026-06-27
+
+### Changed
+- Relaxed the `mini_magick` dependency from `~> 4.0` to `>= 4.0, < 6` (#20)
+
 ## [0.3.1] - 2026-03-21
 
 ### Added
